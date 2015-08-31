@@ -186,18 +186,6 @@ def checkFile():
 
 ### INPUT KEY CHECKING ###
 
-def getCh():
-   fd = sys.stdin.fileno()
-   old_settings = termios.tcgetattr(fd)
-   
-   try:
-      tty.setraw(fd)
-      ch = sys.stdin.read(1)
-   finally:
-      termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-      
-   return ch
-
 def checkKey():
    global abort, COLOR_EFFECT
    
@@ -220,10 +208,15 @@ def checkKey():
 
 ### STARTING PROGRAM LOOP ###
 
-print ("Starting, type 'c' to stop")
-
 start_new_thread(checkKey, ())
 updateLights()
+
+try:
+   run = open('running','a')   # Trying to create a new file or open one
+   run.close()
+
+except:
+   print("Could not write running file")
 
 while abort == False:
    # Read data from device
@@ -249,6 +242,8 @@ while abort == False:
 ### DO WHEN QUITTING ###
 
 print ("Aborting...")
+if os.path.isfile('running'):
+   os.remove('running')
 clearLights()
 stream.stop_stream
 stream.close()

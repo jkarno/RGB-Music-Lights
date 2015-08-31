@@ -17,6 +17,7 @@ class ColorServer(object):
       <head>
        <title>Color Controller</title>
        <link href="/static/css/style.css" rel="stylesheet">
+       <meta id="viewport" name="viewport" content= "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
       </head>
       <body class="outside">
