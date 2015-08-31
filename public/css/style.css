@@ -1,0 +1,18 @@
+.controller {
+   text-align: center;
+   margin-top: 10%;
+   padding-top: 7%;
+   padding-bottom: 7%;
+   margin-bottom: 10%;
+   background-color: #FDF3E7;
+   color: #3B3738;
+}
+
+.outside {
+   background-color: #C63D0F;
+}
+
+#clickOn, #clickOff, #mode1, #mode2, #mode3 {
+   background: #3B3738;
+   color: #FDF3E7;
+}

@@ -14,31 +14,34 @@ class ColorServer(object):
   @cherrypy.expose
   def index(self):
     return """<html>
-       <head>
-         <title>Color Controller</title>
-       </head>
-       <body>
-         <form method="get" action="turnOn">
-            <button type="submit" id="clickON">Turn the lights on!</button>
-         </form> 
-         
-         <form method="get" action="turnOff">
-            <button type="submit" id="clickOFF">Turn the lights off...</button>
-         </form>
-         <br>
-         <p>
+      <head>
+       <title>Color Controller</title>
+       <link href="/static/css/style.css" rel="stylesheet">
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+      </head>
+      <body class="outside">
+        <div class="controller">
+          <form style='display: inline-block; padding: 5px;' method="get" action="turnOn">
+            <button type="submit" class="btn btn-default btn-lg" id="clickON">Turn the lights on!</button>
+          </form> 
+          <form style='display: inline-block; padding: 5px;' method="get" action="turnOff">
+            <button type="submit" class="btn btn-default btn-lg" id="clickOFF">Turn the lights off...</button>
+          </form>
+          <br>
+          <p>
             <h1>Choose a Mode!</h1>
-            <form method="get" action="chill">
-              <button type="submit" id="mode1">Chill Mode</button>
+            <form style='display: inline-block; padding: 5px;' method="get" action="chill">
+              <button type="submit" class="btn btn-default" id="mode1">Chill Mode</button>
             </form>
-            <form method="get" action="energy">
-              <button type="submit" id="mode2">Energy Mode</button>
+            <form style='display: inline-block; padding: 5px;' method="get" action="energy">
+              <button type="submit" class="btn btn-default" id="mode2">Energy Mode</button>
             </form>
-            <form method="get" action="party">
-              <button type="submit" id="mode3">Party Mode</button>
+            <form style='display: inline-block; padding: 5px;' method="get" action="party">
+              <button type="submit" class="btn btn-default" id="mode3">Party Mode</button>
             </form>
-         </p>
-       </body>
+          </p>
+        </div>
+      </body>
     </html>"""
 
   @cherrypy.expose
@@ -67,5 +70,15 @@ class ColorServer(object):
     raise cherrypy.HTTPRedirect("/index")
 
 if __name__ == '__main__':
+   conf = {
+     '/': {
+         'tools.sessions.on': True,
+         'tools.staticdir.root': os.path.abspath(os.getcwd())
+     },
+     '/static': {
+         'tools.staticdir.on': True,
+         'tools.staticdir.dir': './public'
+     }
+   }
    cherrypy.config.update({'server.socket_host': '0.0.0.0'})
-   cherrypy.quickstart(ColorServer())
+   cherrypy.quickstart(ColorServer(), '/', conf)
