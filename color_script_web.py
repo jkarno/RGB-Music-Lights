@@ -37,10 +37,16 @@ LAST_DIR = "up"
 UPDATE_BRIGHT = 0
 COLOR_EFFECT = 3
 
+# MODE VARIABLES
+LISTEN = True
+STATIC_LEVEL = 0.2
+STATIC_SPEED = 0.02
+
 # Tracks level history
 LEVEL_HISTORY = []
 LAST_LEVEL = 0.5
 
+# Current color values
 r = 255.0
 g = 0.0
 b = 0.0
@@ -171,8 +177,6 @@ def updateLevel(rms):
       LEVEL_HISTORY.append(rms)
    return level
 
-### MUSIC FUNCTIONS ###
-
 ### FILE STATE CHECKING ###
 
 def checkFile():
@@ -187,7 +191,7 @@ def checkFile():
 ### INPUT KEY CHECKING ###
 
 def checkKey():
-   global abort, COLOR_EFFECT
+   global abort, COLOR_EFFECT, LISTEN, STATIC_LEVEL
    
    while True:
       c = checkFile()
@@ -198,12 +202,21 @@ def checkKey():
       if c == '1':
          print "Chill Mode"
          COLOR_EFFECT = 3
+         STATIC_LEVEL = 0.2
       if c == '2':
          print "Energy Mode"
          COLOR_EFFECT = 10
+         STATIC_LEVEL = 0.6
       if c == '3':
          print "Party Mode"
          COLOR_EFFECT = 15
+         STATIC_LEVEL = 1.0
+      if c == 'n':
+         print "Ignoring music"
+         LISTEN = False
+      if c == 'y':
+         print "Listening to music"
+         LISTEN = True
 
 
 ### STARTING PROGRAM LOOP ###
@@ -219,24 +232,29 @@ except:
    print("Could not write running file")
 
 while abort == False:
-   # Read data from device
-   if stream.is_stopped():
-      stream.start_stream()
 
-   data = stream.read(CHUNK)
-   stream.stop_stream()
+   if LISTEN:
+      # Read data from device
+      if stream.is_stopped():
+         stream.start_stream()
 
-   rms = audioop.rms(data, 2)
+      data = stream.read(CHUNK)
+      stream.stop_stream()
 
-   level = updateLevel(rms)
-   # updateScale(level)
+      rms = audioop.rms(data, 2)
 
-   if level < LOWEST_BRIGHTNESS:
-      level = LOWEST_BRIGHTNESS
+      level = updateLevel(rms)
+      # updateScale(level)
 
-   updateBright(level)
+      if level < LOWEST_BRIGHTNESS:
+         level = LOWEST_BRIGHTNESS
 
-   updateColors(level)
+      updateBright(level)
+      updateColors(level)
+   else:
+      updateColors(STATIC_LEVEL)
+      time.sleep(STATIC_SPEED)
+
    updateLights()
 
 ### DO WHEN QUITTING ###

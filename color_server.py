@@ -30,7 +30,7 @@ class ColorServer(object):
           </form>
           <br>
           <p>
-            <h1>Choose a Mode!</h1>
+            <h3>Choose a Mode</h3>
             <form style='display: inline-block; padding: 5px;' method="get" action="chill">
               <button type="submit" class="btn btn-default" id="mode1">Chill Mode</button>
             </form>
@@ -39,6 +39,15 @@ class ColorServer(object):
             </form>
             <form style='display: inline-block; padding: 5px;' method="get" action="party">
               <button type="submit" class="btn btn-default" id="mode3">Party Mode</button>
+            </form>
+          </p>
+          <p>
+            <h3>Go to Music?</h3>
+            <form style='display: inline-block; padding: 5px;' method="get" action="listenOn">
+              <button type="submit" class="btn btn-default" id="listenON">Yes</button>
+            </form>
+            <form style='display: inline-block; padding: 5px;' method="get" action="listenOff">
+              <button type="submit" class="btn btn-default" id="listenOFF">No</button>
             </form>
           </p>
         </div>
@@ -68,6 +77,16 @@ class ColorServer(object):
   @cherrypy.expose
   def party(self):
     os.system("python make_file.py 3")
+    raise cherrypy.HTTPRedirect("/index")
+
+  @cherrypy.expose
+  def listenOn(self):
+    os.system("python make_file.py y")
+    raise cherrypy.HTTPRedirect("/index")
+
+  @cherrypy.expose
+  def listenOff(self):
+    os.system("python make_file.py n")
     raise cherrypy.HTTPRedirect("/index")
 
 if __name__ == '__main__':
