@@ -14,3 +14,7 @@ When the other buttons are pressed, a system call is made that runs `make_file.p
 ## How the hardware/script is set up
 
 The audio source is passed into an Onkyo receiver which outputs a signal to both  speakers and to a monitor out port on the receiver. An RCA to aux cable takes that signal and then a stereo to mono jack converts the signal for processing. Next, the signal runs into a USB soundcard which is hooked up to and configured for the Raspberry Pi. The Raspberry Pi analyzes this signal using PyAudio and Audioop to detect rms values. This rms value is passed to several functions which determine what the current brightness and color of the lights should be. Next, the script uses pigpio to send a signal for each of the pins on the GPIO board on the Raspberry Pi. Jumper wires are connected from these pins to a breadboard which is also hooked up to a power supply and the RGB LED lights. The result is a real-time processing of any audio through the receiver and conversion into both the brightness and color of the lights in the room, dependent on relative amplitudes of the music.
+
+## DEMO
+
+A short video demo can be viewed at this link https://vimeo.com/138358221
